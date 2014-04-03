@@ -35,6 +35,7 @@ extern int finalAngle;
 extern float radius_inner ; 
 extern float centre_x ; 
 extern float centre_y ;
+extern b2Body *circle_facing ;
 int initial = 18;
 int prev = 0;
 base_sim_t::base_sim_t()
@@ -102,12 +103,13 @@ void base_sim_t::draw_title(int x, int y, const char *string)
 
 void base_sim_t::step(settings_t* settings)
 {
-  b2Vec2 pos = body->GetPosition();
   char c = (initialAngle/36)%10 + '0';
   m_debug_draw.DrawString(100,70,&c);
+  
   if(finalAngle >initialAngle)
   {
       body->SetTransform( body->GetPosition(), (initialAngle + 1)*DEGTORAD );      
+      circle_facing->SetTransform( circle_facing->GetPosition(), (initialAngle + 1)*DEGTORAD );      
       initialAngle +=1;
   }  
 
