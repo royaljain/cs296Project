@@ -8,12 +8,13 @@
 //! Included in double quotes - the path to find these has to be given at compile time
 #include "callbacks.hpp"
 #include "dominos.hpp"
+#include <iostream>
 #ifndef __APPLE__
 #include "GL/glui.h"
 #else
 #include "GL/glui.h"
 #endif
-
+using namespace std;
 //! The namespace protects the global variables and other names from
 //! clashes in scope. Read about the use of named and unnamed
 //! namespaces in C++ Figure out where all the datatypes used below

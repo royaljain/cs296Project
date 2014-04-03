@@ -44,6 +44,10 @@ using namespace std;
 int initialAngle = 0;
 b2Body* body ;
 int finalAngle = 0;
+float radius_inner = 5.0f; 
+float centre_x = 14.0f; 
+float centre_y = 16.0f;
+
 namespace cs296
 {
   /**  The is the constructor 
@@ -54,17 +58,14 @@ namespace cs296
   {
 
 
-      float radius_inner = 5.0f; 
-      float centre_x = 14.0f; 
-      float centre_y = 16.0f;
-
+     
       b2BodyDef bd;
       bd.position.Set(centre_x,centre_y);
       bd.type = b2_dynamicBody;
       body = m_world->CreateBody(&bd);
       
       b2CircleShape circle;
-      circle.m_p.Set(0.0f, 0.0f);
+      //circle.m_p.Set(0.0f, 0.0f);
       circle.m_radius = radius_inner;
 
       b2FixtureDef *fd = new b2FixtureDef;
@@ -73,9 +74,10 @@ namespace cs296
       body->CreateFixture(fd);
 
 
+
       for(int i=0;i<10;i++)
       {
-        float theta = 36*i*PI/180;
+        float theta = (36*i-13.5)*PI/180;
         float length = 3.0f;
         float deltheta = 10*PI/180;
         float end = length + radius_inner;
