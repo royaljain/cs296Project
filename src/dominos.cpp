@@ -31,12 +31,13 @@
 #else
 	#include "GL/freeglut.h"
 #endif
-
+ #include<math.h>
+#include<iostream>
 #include <cstring>
 using namespace std;
 
 #include "dominos.hpp"
-
+#define PI 3.14159
 namespace cs296
 {
   /**  The is the constructor 
@@ -45,15 +46,88 @@ namespace cs296
   
   dominos_t::dominos_t()
   {
+
+    {   
+
+      float radius_inner = 5.0f; 
+      float centre_x = 14.0f; 
+      float centre_y = 16.0f;
+
+      b2BodyDef bd;
+      bd.position.Set(centre_x,centre_y);
+      bd.type = b2_dynamicBody;
+      b2Body* body = m_world->CreateBody(&bd);
+      
+      b2CircleShape circle;
+      circle.m_p.Set(0.0f, 0.0f);
+      circle.m_radius = radius_inner;
+
+      b2FixtureDef *fd = new b2FixtureDef;
+      fd->density = 1.0f;
+      fd->shape = &circle;
+      body->CreateFixture(fd);
+
+
+      for(int i=0;i<10;i++)
+      {
+        float theta = 36*i*PI/180;
+        float length = 3.0f;
+        float deltheta = 10*PI/180;
+        float end = length + radius_inner;
+     
+        b2PolygonShape bs1;
+        b2Vec2 vertices[4];
+
+        vertices[0].Set(radius_inner*cos(theta),radius_inner*sin(theta));
+        vertices[1].Set(end*cos(theta),end*sin(theta));
+        vertices[2].Set(end*cos(theta - deltheta),end*sin(theta-deltheta));
+        vertices[3].Set(radius_inner*cos(theta-deltheta),radius_inner*sin(theta-deltheta));
+        
+        bs1.Set(vertices,4);
+
+
+        b2FixtureDef *fd2 = new b2FixtureDef;
+        fd2->density = 1.0f;
+        fd2->shape = &bs1;
+      
+        body->CreateFixture(fd2); 
+    
+      }
+
+
+      b2BodyDef bd2;
+      bd2.position.Set(centre_x, centre_y);
+      b2Body* body2 = m_world->CreateBody(&bd2);
+      
+      b2CircleShape circle2;
+      circle2.m_p.Set(0.0f, 0.0f);
+      circle2.m_radius = 0.1f;
+
+      b2FixtureDef *fd3 = new b2FixtureDef;
+      fd3->density = 1.0f;
+      fd3->shape = &circle2;
+      body2->CreateFixture(fd3);    
+
+      b2RevoluteJointDef jointDef;
+      jointDef.bodyA = body;
+      jointDef.bodyB = body2;
+      jointDef.localAnchorA.Set(0,0);
+      jointDef.localAnchorB.Set(0,0);
+      jointDef.collideConnected = false;
+      m_world->CreateJoint(&jointDef);
+    
+    }  
+  }
+
+
+  sim_t *sim = new sim_t("Dominos", dominos_t::create);
+}
+
     //Ground
     /*! \var b1 
      * \brief pointer to the body ground 
      */ 
-     
-
-     
-     
-     
+    /*
     b2Body* b1;  
     {
       
@@ -68,7 +142,7 @@ namespace cs296
     {
       b2PolygonShape shape;
       shape.SetAsBox(6.0f, 0.25f);
-	
+  
       b2BodyDef bd;
       bd.position.Set(-31.0f, 30.0f);
       b2Body* ground = m_world->CreateBody(&bd);
@@ -79,27 +153,27 @@ namespace cs296
     {
       b2PolygonShape shape;
       shape.SetAsBox(0.1f, 1.0f);
-	
+  
       b2FixtureDef fd;
       fd.shape = &shape;
       fd.density = 20.0f;
       fd.friction = 0.1f;
-		
+    
       for (int i = 0; i < 10; ++i)
-	{
-	  b2BodyDef bd;
-	  bd.type = b2_dynamicBody;
-	  bd.position.Set(-35.5f + 1.0f * i, 31.25f);
-	  b2Body* body = m_world->CreateBody(&bd);
-	  body->CreateFixture(&fd);
-	}
+  {
+    b2BodyDef bd;
+    bd.type = b2_dynamicBody;
+    bd.position.Set(-35.5f + 1.0f * i, 31.25f);
+    b2Body* body = m_world->CreateBody(&bd);
+    body->CreateFixture(&fd);
+  }
     }
       
     //Another horizontal shelf
     {
       b2PolygonShape shape;
       shape.SetAsBox(7.0f, 0.25f, b2Vec2(-20.f,20.f), 0.0f);
-	
+  
       b2BodyDef bd;
       bd.position.Set(1.0f, 6.0f);
       b2Body* ground = m_world->CreateBody(&bd);
@@ -111,27 +185,27 @@ namespace cs296
     {
       b2Body* b2;
       {
-	b2PolygonShape shape;
-	shape.SetAsBox(0.25f, 1.5f);
-	  
-	b2BodyDef bd;
-	bd.position.Set(-36.5f, 28.0f);
-	b2 = m_world->CreateBody(&bd);
-	b2->CreateFixture(&shape, 10.0f);
+  b2PolygonShape shape;
+  shape.SetAsBox(0.25f, 1.5f);
+    
+  b2BodyDef bd;
+  bd.position.Set(-36.5f, 28.0f);
+  b2 = m_world->CreateBody(&bd);
+  b2->CreateFixture(&shape, 10.0f);
       }
-	
+  
       b2Body* b4;
       {
-	b2PolygonShape shape;
-	shape.SetAsBox(0.25f, 0.25f);
-	  
-	b2BodyDef bd;
-	bd.type = b2_dynamicBody;
-	bd.position.Set(-40.0f, 33.0f);
-	b4 = m_world->CreateBody(&bd);
-	b4->CreateFixture(&shape, 2.0f);
+  b2PolygonShape shape;
+  shape.SetAsBox(0.25f, 0.25f);
+    
+  b2BodyDef bd;
+  bd.type = b2_dynamicBody;
+  bd.position.Set(-40.0f, 33.0f);
+  b4 = m_world->CreateBody(&bd);
+  b4->CreateFixture(&shape, 2.0f);
       }
-	
+  
       b2RevoluteJointDef jd;
       b2Vec2 anchor;
       anchor.Set(-37.0f, 40.0f);
@@ -142,24 +216,24 @@ namespace cs296
     //The train of small spheres
     {
       b2Body* spherebody;
-	
+  
       b2CircleShape circle;
       circle.m_radius = 0.5;
-	
+  
       b2FixtureDef ballfd;
       ballfd.shape = &circle;
       ballfd.density = 1.0f;
       ballfd.friction = 0.0f;
       ballfd.restitution = 0.0f;
-	
+  
       for (int i = 0; i < 10; ++i)
-	{
-	  b2BodyDef ballbd;
-	  ballbd.type = b2_dynamicBody;
-	  ballbd.position.Set(-22.2f + i*1.0, 26.6f);
-	  spherebody = m_world->CreateBody(&ballbd);
-	  spherebody->CreateFixture(&ballfd);
-	}
+  {
+    b2BodyDef ballbd;
+    ballbd.type = b2_dynamicBody;
+    ballbd.position.Set(-22.2f + i*1.0, 26.6f);
+    spherebody = m_world->CreateBody(&ballbd);
+    spherebody->CreateFixture(&ballfd);
+  }
     }
 
     //The pulley system
@@ -201,8 +275,8 @@ namespace cs296
       box1->CreateFixture(fd3);
 
       //The bar
-      bd->position.Set(10,15);	
-      fd1->density = 34.0;	  
+      bd->position.Set(10,15);  
+      fd1->density = 34.0;    
       b2Body* box2 = m_world->CreateBody(bd);
       box2->CreateFixture(fd1);
 
@@ -221,7 +295,7 @@ namespace cs296
     {
       b2PolygonShape shape;
       shape.SetAsBox(2.2f, 0.2f);
-	
+  
       b2BodyDef bd;
       bd.position.Set(14.0f, 14.0f);
       bd.type = b2_dynamicBody;
@@ -252,7 +326,7 @@ namespace cs296
       b2Body* sbody;
       b2CircleShape circle;
       circle.m_radius = 1.0;
-	
+  
       b2FixtureDef ballfd;
       ballfd.shape = &circle;
       ballfd.density = 50.0f;
@@ -317,8 +391,5 @@ namespace cs296
       fd3->shape = new b2PolygonShape;
       fd3->shape = &shape2;
       body3->CreateFixture(fd3);
-    }
-  }
+    }*/
 
-  sim_t *sim = new sim_t("Dominos", dominos_t::create);
-}
