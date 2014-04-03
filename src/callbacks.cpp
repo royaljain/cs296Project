@@ -7,7 +7,7 @@
 //! These are user defined include files
 //! Included in double quotes - the path to find these has to be given at compile time
 #include "callbacks.hpp"
-
+#include "dominos.hpp"
 #ifndef __APPLE__
 #include "GL/glui.h"
 #else
@@ -18,6 +18,9 @@
 //! clashes in scope. Read about the use of named and unnamed
 //! namespaces in C++ Figure out where all the datatypes used below
 //! are defined
+
+extern int finalAngle;
+extern int initialAngle;
 namespace cs296
 {
   int32 test_index = 0;
@@ -144,8 +147,7 @@ namespace cs296
       
     //! Press right to pan right.
     case GLUT_KEY_RIGHT:
-      settings.view_center.x += 0.5f;
-      resize_cb(width, height);
+      finalAngle+=36;
       break;
       
     //! Press down to pan down.
@@ -284,6 +286,8 @@ namespace cs296
     delete test;
     entry = cs296::sim;
     test = entry->create_fcn();
+    finalAngle=0;
+    initialAngle=0;
     resize_cb(width, height);
   }
   

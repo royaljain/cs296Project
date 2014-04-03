@@ -106,7 +106,7 @@ obj/callbacks.o: src/callbacks.cpp src/callbacks.hpp src/render.hpp \
  external/include/Box2D/Dynamics/Joints/b2RopeJoint.h \
  external/include/Box2D/Dynamics/Joints/b2WeldJoint.h \
  external/include/Box2D/Dynamics/Joints/b2WheelJoint.h src/cs296_base.hpp \
- /usr/include/GL/glui.h /usr/include/GL/glut.h \
+ src/dominos.hpp /usr/include/GL/glui.h /usr/include/GL/glut.h \
  /usr/include/GL/freeglut_std.h /usr/include/GL/gl.h \
  /usr/include/GL/glext.h /usr/include/inttypes.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.6/include/stdint.h /usr/include/stdint.h \

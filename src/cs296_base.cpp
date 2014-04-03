@@ -18,14 +18,21 @@
 
 #include "cs296_base.hpp"
 #include <cstdio>
+#include <iostream>
+#include "dominos.hpp"
+#define DEGTORAD 0.0174532925199432957f
+
 using namespace std;
 using namespace cs296;
 
+extern b2Body *body;
+extern int initialAngle;
+extern int finalAngle;
 
 base_sim_t::base_sim_t()
 {
 	b2Vec2 gravity;
-	gravity.Set(0.0f, -10.0f);
+	gravity.Set(0.0f, 0.0f);
 	m_world = new b2World(gravity);
 
 	m_text_line = 30;
@@ -87,6 +94,13 @@ void base_sim_t::draw_title(int x, int y, const char *string)
 
 void base_sim_t::step(settings_t* settings)
 {
+
+  if(finalAngle >initialAngle)
+  {
+      body->SetTransform( body->GetPosition(), (initialAngle + 1)*DEGTORAD );      
+      initialAngle +=1;
+  }  
+
   float32 time_step = settings->hz > 0.0f ? 1.0f / settings->hz : float32(0.0f);
 
   if (settings->pause)
