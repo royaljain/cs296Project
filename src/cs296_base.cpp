@@ -109,7 +109,6 @@ void base_sim_t::step(settings_t* settings)
   if(finalAngle >initialAngle)
   {
       body->SetTransform( body->GetPosition(), (initialAngle + 1)*DEGTORAD );      
-      circle_facing->SetTransform( circle_facing->GetPosition(), (initialAngle + 1)*DEGTORAD );      
       initialAngle +=1;
   }  
 
