@@ -142,8 +142,7 @@ namespace cs296
       
       //! Press left to pan left.
     case GLUT_KEY_LEFT:
-      settings.view_center.x -= 0.5f;
-      resize_cb(width, height);
+      finalAngle-=36;
       break;
       
     //! Press right to pan right.

@@ -32,10 +32,7 @@ using namespace cs296;
 extern b2Body *body;
 extern int initialAngle;
 extern int finalAngle;
-extern float radius_inner ; 
-extern float centre_x ; 
-extern float centre_y ;
-extern b2Body *circle_facing ;
+extern b2Body *governer ;
 int initial = 18;
 int prev = 0;
 base_sim_t::base_sim_t()
@@ -103,14 +100,22 @@ void base_sim_t::draw_title(int x, int y, const char *string)
 
 void base_sim_t::step(settings_t* settings)
 {
-  char c = (initialAngle/36)%10 + '0';
-  m_debug_draw.DrawString(100,70,&c);
+ // if(governer!=0)
+  //cout<<(governer->GetPosition()).x<<" "<<(governer->GetPosition()).y<<endl;
   
-  if(finalAngle >initialAngle)
+  char numero = (initialAngle/36)%10 + '0';
+  m_debug_draw.DrawString(100,70,&numero);
+  
+  if(finalAngle > initialAngle)
   {
-      body->SetTransform( body->GetPosition(), (initialAngle + 1)*DEGTORAD );      
       initialAngle +=1;
+      body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
+      
   }  
+  else {
+      initialAngle -=1;
+      body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
+  }
 
   float32 time_step = settings->hz > 0.0f ? 1.0f / settings->hz : float32(0.0f);
 
