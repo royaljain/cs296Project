@@ -154,5 +154,9 @@ obj/dominos.o: src/dominos.cpp src/cs296_base.hpp src/render.hpp \
  /usr/include/c++/4.6/bits/locale_facets.tcc \
  /usr/include/c++/4.6/bits/basic_ios.tcc \
  /usr/include/c++/4.6/bits/ostream.tcc /usr/include/c++/4.6/istream \
- /usr/include/c++/4.6/bits/istream.tcc /usr/include/c++/4.6/cstring \
+ /usr/include/c++/4.6/bits/istream.tcc /usr/include/libio.h \
+ /usr/include/_G_config.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/c++/4.6/cstring \
  src/dominos.hpp

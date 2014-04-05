@@ -32,9 +32,15 @@ using namespace cs296;
 extern b2Body *body;
 extern int initialAngle;
 extern int finalAngle;
+extern int initialAngle2;
+extern int finalAngle2;
 extern b2Body *governer ;
+extern b2Body *body2 ;
 int initial = 18;
 int prev = 0;
+
+int input = 0;
+int input2 = 0;
 base_sim_t::base_sim_t()
 {
 	b2Vec2 gravity;
@@ -100,22 +106,50 @@ void base_sim_t::draw_title(int x, int y, const char *string)
 
 void base_sim_t::step(settings_t* settings)
 {
- // if(governer!=0)
-  //cout<<(governer->GetPosition()).x<<" "<<(governer->GetPosition()).y<<endl;
-  
+ 
   char numero = (initialAngle/36)%10 + '0';
-  m_debug_draw.DrawString(100,70,&numero);
+  m_debug_draw.DrawString(900,30,"Output tens digit");
+  m_debug_draw.DrawString(1050,30,&numero);
   
+  
+  char numero2 = (initialAngle2/36 + initialAngle/360)%10 + '0';
+  m_debug_draw.DrawString(450,30,"Output units digit");
+  m_debug_draw.DrawString(600,30,&numero2);
+  
+  
+  char numero3 = (input/36)%10 + '0';
+  m_debug_draw.DrawString(900,630,"Input Units digit");
+  m_debug_draw.DrawString(1050,630,&numero3);
+  
+  
+  char numero4 = (input2/36)%10 + '0';
+  m_debug_draw.DrawString(450,630,"Input Tens digit");
+  m_debug_draw.DrawString(600,630,&numero4);
+  
+
+
   if(finalAngle > initialAngle)
   {
+      input +=1;
       initialAngle +=1;
       body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
-      
   }  
-  else {
-      initialAngle -=1;
-      body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
+  
+  if(finalAngle2 > initialAngle2)
+  {
+    input2+=1;
+      initialAngle2 +=1;
+      body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
+  }  
+  
+  if(finalAngle==initialAngle && finalAngle2==initialAngle2)
+  {
+      m_debug_draw.DrawString(200,100,"Enter Next Number");
+      input = 0;
+      input2 = 0;
   }
+
+
 
   float32 time_step = settings->hz > 0.0f ? 1.0f / settings->hz : float32(0.0f);
 

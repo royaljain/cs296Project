@@ -22,6 +22,8 @@ using namespace std;
 
 extern int finalAngle;
 extern int initialAngle;
+extern int initialAngle2;
+extern int finalAngle2;
 namespace cs296
 {
   int32 test_index = 0;
@@ -142,7 +144,7 @@ namespace cs296
       
       //! Press left to pan left.
     case GLUT_KEY_LEFT:
-      finalAngle-=36;
+      finalAngle2+=36;
       break;
       
     //! Press right to pan right.
@@ -152,6 +154,7 @@ namespace cs296
       
     //! Press down to pan down.
     case GLUT_KEY_DOWN:
+      finalAngle2+=36;
       settings.view_center.y -= 0.5f;
       resize_cb(width, height);
       break;
@@ -288,6 +291,8 @@ namespace cs296
     test = entry->create_fcn();
     finalAngle=0;
     initialAngle=0;
+    finalAngle2=0;
+    initialAngle2=0;
     resize_cb(width, height);
   }
   
