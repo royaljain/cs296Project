@@ -25,6 +25,7 @@
 #include "dominos.hpp"
 #include <math.h>
 #define DEGTORAD 0.0174532925199432957f
+#define PI 3.14159
 
 using namespace std;
 using namespace cs296;
@@ -36,6 +37,8 @@ extern int initialAngle2;
 extern int finalAngle2;
 extern b2Body *governer ;
 extern b2Body *body2 ;
+extern b2Body *output ;
+extern b2Body *output2 ;
 int initial = 18;
 int prev = 0;
 
@@ -107,12 +110,14 @@ void base_sim_t::draw_title(int x, int y, const char *string)
 void base_sim_t::step(settings_t* settings)
 {
  
-  char numero = (initialAngle/36)%10 + '0';
+  char numero = int((output->GetAngle()*360/PI+10)/36)%10 + '0';
+  //cout<<output->GetAngle()<<" ";
   m_debug_draw.DrawString(900,30,"Output tens digit");
   m_debug_draw.DrawString(1050,30,&numero);
   
   
-  char numero2 = (initialAngle2/36 + initialAngle/360)%10 + '0';
+  char numero2 = int((output2->GetAngle()*360/PI+10)/36)%10 + '0';
+  //cout<<output2->GetAngle()<<" ";
   m_debug_draw.DrawString(450,30,"Output units digit");
   m_debug_draw.DrawString(600,30,&numero2);
   
@@ -156,6 +161,7 @@ void base_sim_t::step(settings_t* settings)
       initialAngle2 -=1;
       body->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
   }
+
   if(finalAngle==initialAngle && finalAngle2==initialAngle2)
   {
       m_debug_draw.DrawString(200,100,"Enter Next Number");

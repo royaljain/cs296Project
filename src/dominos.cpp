@@ -70,7 +70,7 @@ namespace cs296
    */ 
   
 
-b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float angle,b2World* m_world,b2Body* b2, int spokes,bool coll)
+b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float angle,b2World* m_world,b2Body* b2, int spokes, float dens)
 {
       b2Body *b;
   
@@ -83,33 +83,12 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       circle.m_radius = radius;
 
       b2FixtureDef *fd = new b2FixtureDef;
-      fd->density = 1.0f;
+      fd->density = dens;
       fd->shape = &circle;
-      //if(coll)fd->filter.groupIndex=-1;
       b->CreateFixture(fd);
-      
-/*
-      b2BodyDef bd2;
-      bd2.type = b2_staticBody;
-      bd2.position.Set(x_centre,y_centre);
-      b2 = m_world->CreateBody(&bd2);
-      
-      b2CircleShape circle2;
-      circle2.m_radius = 1.1f;
-
-      b2FixtureDef *fd2 = new b2FixtureDef;
-      fd2->density = 1.0f;
-      fd2->shape = &circle2;
-      b2->CreateFixture(fd2);
-*/
-      
-
-
-
 
       for(int i=0;i<spokes;i++)
       {
-//        if(i==spokes/2)continue;
         float ang = 360.0/spokes;        
         float theta = (ang*i + angle)*PI/180 ;
         float deltheta = ang*PI/360;
@@ -123,18 +102,13 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
         b2FixtureDef *fd2 = new b2FixtureDef;
         fd2->density = 1.0f;
         fd2->shape = &bs1;
-        //if(coll)fd2->filter.groupIndex=-1;
         b->CreateFixture(fd2); 
       }
-
-
 
        b2RevoluteJointDef revoluteJointDef;
        revoluteJointDef.Initialize(b,b2,b->GetWorldCenter());
        m_world->CreateJoint(&revoluteJointDef);
-
-        
-        return b;
+       return b;
 }
 
 
@@ -159,12 +133,12 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       reference->CreateFixture(fd2);
 
       
-    { 
+     
       float radius_input = 4.0f;
       float centre_x_input = 35.0f;
       float centre_y_input = 10.0f;
       
-      body = generateSpokedWheel(radius_input,centre_x_input,centre_y_input,0.0,m_world,reference,10,false);
+      body = generateSpokedWheel(radius_input,centre_x_input,centre_y_input,0.0,m_world,reference,10,1.0f);
       
       float radius_governer = 8.0f;
       float centre_x_governer = 30.0f;
@@ -182,17 +156,16 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       float centre_y_carry_support = centre_y_governer - sqrt(distance3*distance3 - pow((centre_x_carry_support - centre_x_governer),2));
       printf("%0.10f\n",centre_y_carry_support);
 */
-      governer = generateSpokedWheel(radius_governer,centre_x_governer,centre_y_governer,18.0,m_world,reference,20,false);
-      output = generateSpokedWheel(radius_output,centre_x_output,centre_y_output,0.0,m_world,reference,10,false);
-  //    carry_support = generateSpokedWheel(radius_carry_support,centre_x_carry_support,centre_y_carry_support,10.0,m_world,reference,10,false);  
+      governer = generateSpokedWheel(radius_governer,centre_x_governer,centre_y_governer,18.0,m_world,reference,20,0.7f);
+      output = generateSpokedWheel(radius_output,centre_x_output,centre_y_output,0.0,m_world,reference,10,1.0f);
 
 
-      float radius = 4.000f;
-      float centre_x_carry_support = 7.5f;
+    { float radius = 4.000f;
+      float centre_x_carry_support = 5.0f;
       b2Body *b;
   
       b2BodyDef bd;
-      bd.position.Set(centre_x_carry_support,centre_y_input);
+      bd.position.Set(centre_x_carry_support,centre_y_governer);
       bd.type = b2_dynamicBody;
       b = m_world->CreateBody(&bd);
       
@@ -206,25 +179,28 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       b->CreateFixture(fd);
 
 
-      float spokes = 5.0;
+      float spokes = 10.0;
       float ang = 360.0/spokes;        
-      float theta = 180.0*PI/180;
+      float theta = 144*PI/180;
       float deltheta = ang*PI/360;
       float length = deltheta*radius/2.0;
 
 
-    
-      b2PolygonShape bs1;
-      b2Vec2 pos((radius*cos(deltheta/2.0)+length/2.0)*cos(theta + deltheta/2.0),(radius*cos(deltheta/2.0)+length/2.0)*sin(theta + deltheta/2.0));
-      bs1.SetAsBox(length,length,pos,theta+deltheta/2);
+      for(int i=0;i<2;i++){
+
+        b2PolygonShape bs1;
+        b2Vec2 pos((radius*cos(deltheta/2.0)+length/2.0)*cos(theta + deltheta/2.0),(radius*cos(deltheta/2.0)+length/2.0)*sin(theta + deltheta/2.0));
+        bs1.SetAsBox(2*length,length,pos,theta+deltheta/2);
 
 
-      b2FixtureDef *fd2 = new b2FixtureDef;
-      fd2->density = 1.0f;
-      fd2->shape = &bs1;
-      fd2->filter.groupIndex=-1;  
-    
-      b->CreateFixture(fd2);
+        b2FixtureDef *fd2 = new b2FixtureDef;
+        fd2->density = 1.0f;
+        fd2->shape = &bs1;
+        fd2->filter.groupIndex=-1;  
+      
+        b->CreateFixture(fd2);
+
+        theta=324*PI/180;}
 
       b2RevoluteJointDef revoluteJointDef;
       revoluteJointDef.Initialize(b,reference,b->GetWorldCenter());
@@ -234,14 +210,14 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
 
 
 
-      float half_length_shelf = ((centre_x_input - centre_x_carry_support)/2.0); 
+      float half_length_shelf = ((centre_x_governer - centre_x_carry_support)/2.0); 
 
       b2Body* shelf;
       
 
       b2BodyDef bd3;
       bd3.type = b2_dynamicBody;
-      bd3.position.Set((centre_x_carry_support+centre_x_input)/2.0,centre_y_input+3.00);
+      bd3.position.Set((centre_x_carry_support+centre_x_governer)/2.0,centre_y_input+3.00);
       shelf = m_world->CreateBody(&bd3);
             
       b2PolygonShape rect;
@@ -258,7 +234,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       
       b2BodyDef bd4;
       bd4.type = b2_dynamicBody;
-      bd4.position.Set(((centre_x_carry_support+centre_x_input)/2.0)-3.00,centre_y_input);
+      bd4.position.Set(((centre_x_carry_support+centre_x_governer)/2.0)-3.00,centre_y_input);
       shelf2 = m_world->CreateBody(&bd4);
             
       b2PolygonShape rect2;
@@ -275,7 +251,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
 
       b2RevoluteJointDef revoluteJointDef1;
       revoluteJointDef1.bodyA = shelf;
-      revoluteJointDef1.bodyB = body;
+      revoluteJointDef1.bodyB = governer;
       revoluteJointDef1.collideConnected = false;
       revoluteJointDef1.localAnchorA.Set(half_length_shelf,0.00);
       revoluteJointDef1.localAnchorB.Set(0.00,3.00);
@@ -292,7 +268,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
 
       b2RevoluteJointDef revoluteJointDef12;
       revoluteJointDef12.bodyA = shelf2;
-      revoluteJointDef12.bodyB = body;
+      revoluteJointDef12.bodyB = governer;
       revoluteJointDef12.collideConnected = false;
       revoluteJointDef12.localAnchorA.Set(half_length_shelf,0.00);
       revoluteJointDef12.localAnchorB.Set(-3.00,0.00);
@@ -317,8 +293,8 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       float centre_x_input = 35.0f - xshift;
       float centre_y_input = 10.0f ;
       
-      body2 = generateSpokedWheel(radius_input,centre_x_input,centre_y_input,0.0,m_world,reference,10,true);
-      dirchanger = generateSpokedWheel(radius_input,centre_x_input + 2.5*radius_input,centre_y_input,0.0,m_world,reference,10,true);
+      body2 = generateSpokedWheel(radius_input,centre_x_input,centre_y_input,0.0,m_world,reference,10,0.7f);
+      dirchanger = generateSpokedWheel(radius_input,centre_x_governer + 1.7*radius_governer - xshift ,centre_y_governer,0.0,m_world,reference,10,1.0f);
 
       float radius_governer = 8.0f;
       float centre_x_governer = 30.0f - xshift;
@@ -331,8 +307,8 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       float centre_y_output = centre_y_governer + sqrt(distance2*distance2 - pow((centre_x_output - centre_x_governer),2));
 
 
-      governer2 = generateSpokedWheel(radius_governer,centre_x_governer,centre_y_governer,18.0,m_world,reference,20,false);
-      output2 = generateSpokedWheel(radius_output,centre_x_output,centre_y_output,0.0,m_world,reference,10,false);
+      governer2 = generateSpokedWheel(radius_governer,centre_x_governer,centre_y_governer,18.0,m_world,reference,20,0.5f);
+      output2 = generateSpokedWheel(radius_output,centre_x_output,centre_y_output,0.0,m_world,reference,10,0.7f);
      
     }
 
@@ -437,49 +413,3 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
   }
   sim_t *sim = new sim_t("Dominos", dominos_t::create);
 }
-/*{
-        b2Body *stopper;
-    
-        b2BodyDef bdstop;
-        bdstop.position.Set(28.5f,0);
-        bdstop.type = b2_dynamicBody;
-        stopper = m_world->CreateBody(&bdstop);
-        
-        b2PolygonShape stpshape;
-        b2Vec2 posstop(15.0f,23.5f);
-        stpshape.SetAsBox(5.0f,0.25f,posstop,0);
-
-        b2FixtureDef *fdstop = new b2FixtureDef;
-        fdstop->density = 100.0f;
-        fdstop->shape = &stpshape;
-        stopper->CreateFixture(fdstop);
-
-
-
-
-        b2Body* shelf;
-        b2BodyDef bd;
-        bd.type = b2_staticBody;
-        bd.position.Set(28.5f,0.0f);
-        shelf = m_world->CreateBody(&bd);
-        
-        b2PolygonShape rect;
-        b2Vec2 pos(18.0f,22.0f);
-        rect.SetAsBox(3.0f,1.0f,pos,0);
-
-        b2FixtureDef *fd2 = new b2FixtureDef;
-        fd2->density = 100000.0f;
-        fd2->shape = &rect;
-        shelf->CreateFixture(fd2);
-
-
-
-        b2RevoluteJointDef revoluteJointDef;
-        revoluteJointDef.localAnchorA.Set(5.0f,0.0f);
-       revoluteJointDef.Initialize(reference,stopper,stopper->GetWorldCenter());
-       m_world->CreateJoint(&revoluteJointDef);
-
-      }
-
-
- */
