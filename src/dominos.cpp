@@ -131,14 +131,12 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       fd2->density = 100000.0f;
       fd2->shape = &circle2;
       reference->CreateFixture(fd2);
-
-      
-     
+    
       float radius_input = 4.0f;
       float centre_x_input = 35.0f;
       float centre_y_input = 10.0f;
       
-      body = generateSpokedWheel(radius_input,centre_x_input,centre_y_input,0.0,m_world,reference,10,1.0f);
+      body = generateSpokedWheel(radius_input,centre_x_input,centre_y_input,0.0,m_world,reference,10,10.0f);
       
       float radius_governer = 8.0f;
       float centre_x_governer = 30.0f;
@@ -161,7 +159,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
 
 
     { float radius = 4.000f;
-      float centre_x_carry_support = 5.0f;
+      float centre_x_carry_support = 5.4f;
       b2Body *b;
   
       b2BodyDef bd;
@@ -373,6 +371,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
        b2CircleShape circle;
        circle.m_radius=1.0f;
        b2FixtureDef *fd3 = new b2FixtureDef;
+       
        fd3->shape=&circle;
        hinge->CreateFixture(fd3);
 
@@ -385,18 +384,18 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
        b2Vec2 vertices[3]; 
        vertices[0].Set(0,0); 
        vertices[1].Set(-9,5); 
-       vertices[2].Set(-11,7); 
+       vertices[2].Set(-10,7); 
        shapetemp.Set(vertices,3); 
        b2FixtureDef *fd2 = new b2FixtureDef; 
-       fd2->density = 1.0f; 
+       fd2->density = 100.0f; 
        fd2->shape = &shapetemp; 
        fd2->friction = 0; 
        tri->CreateFixture(fd2);
        b2PolygonShape shapetemp2; 
        b2Vec2 vertices2[3]; 
-       vertices2[0].Set(-11,7); 
+       vertices2[0].Set(-10,7); 
        vertices2[1].Set(-9,5); 
-       vertices2[2].Set(-9.5,4); 
+       vertices2[2].Set(-10,4); 
        shapetemp2.Set(vertices2,3); 
        b2FixtureDef *fd = new b2FixtureDef; 
        fd->density = 150.0f; 
