@@ -50,6 +50,7 @@ int finalAngle2 = 0;
 
 
 b2Body* body ;
+b2Body* dirchanger;
 b2Body* output;
 b2Body* governer; 
 b2Body* carry_support; 
@@ -143,7 +144,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
   dominos_t::dominos_t()
   {
 
-    b2Body* reference;  
+      b2Body* reference;  
       b2BodyDef bd;
       bd.type = b2_staticBody;
       bd.position.Set(0.0f,0.0f);
@@ -309,16 +310,16 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
   }
 
 
-
+      float xshift = 48.0f;
 
     {
-      float xshift = 37.1250f; 
       float radius_input = 4.0f;
       float centre_x_input = 35.0f - xshift;
       float centre_y_input = 10.0f ;
       
       body2 = generateSpokedWheel(radius_input,centre_x_input,centre_y_input,0.0,m_world,reference,10,true);
-      
+      dirchanger = generateSpokedWheel(radius_input,centre_x_input + 2.5*radius_input,centre_y_input,0.0,m_world,reference,10,true);
+
       float radius_governer = 8.0f;
       float centre_x_governer = 30.0f - xshift;
       float distance = (radius_governer + radius_input + max(radius_governer,radius_input)*PI/20 + 0.1*min(radius_governer,radius_input));
@@ -334,6 +335,104 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       output2 = generateSpokedWheel(radius_output,centre_x_output,centre_y_output,0.0,m_world,reference,10,false);
      
     }
+
+
+
+
+{
+       b2Body* hinge;
+       float xreq=-34.0f;
+       float yreq=24.0f;
+       b2BodyDef ref;
+       ref.type= b2_staticBody;
+       ref.position.Set(xreq,yreq);
+       hinge=m_world->CreateBody(&ref);
+       b2CircleShape circle;
+       circle.m_radius=1.0f;
+       b2FixtureDef *fd3 = new b2FixtureDef;
+       fd3->shape=&circle;
+       hinge->CreateFixture(fd3);
+
+       b2Body* tri; 
+       b2BodyDef bd;
+       bd.type = b2_dynamicBody; 
+       bd.position.Set(xreq,yreq); 
+       tri = m_world->CreateBody(&bd); 
+       b2PolygonShape shapetemp; 
+       b2Vec2 vertices[3]; 
+       vertices[0].Set(0,0); 
+       vertices[1].Set(9,5); 
+       vertices[2].Set(11,7); 
+       shapetemp.Set(vertices,3); 
+       b2FixtureDef *fd2 = new b2FixtureDef; 
+       fd2->density = 1.0f; 
+       fd2->shape = &shapetemp; 
+       fd2->friction = 0; 
+       tri->CreateFixture(fd2);
+       b2PolygonShape shapetemp2; 
+       b2Vec2 vertices2[3]; 
+       vertices2[0].Set(11,7); 
+       vertices2[1].Set(9,5); 
+       vertices2[2].Set(9.5,4); 
+       shapetemp2.Set(vertices2,3); 
+       b2FixtureDef *fd = new b2FixtureDef; 
+       fd->density = 150.0f; 
+       fd->friction = 0; 
+       fd->shape = &shapetemp2; 
+       tri->CreateFixture(fd); 
+
+       b2RevoluteJointDef stopper;  
+       b2Vec2 pos(xreq,yreq);
+       stopper.Initialize(hinge,tri,pos); 
+       m_world->CreateJoint(&stopper);
+     }
+
+
+    {
+       b2Body* hinge;
+       b2BodyDef ref;
+       ref.type= b2_staticBody;
+       ref.position.Set(45.5f,25.0f);
+       hinge=m_world->CreateBody(&ref);
+       b2CircleShape circle;
+       circle.m_radius=1.0f;
+       b2FixtureDef *fd3 = new b2FixtureDef;
+       fd3->shape=&circle;
+       hinge->CreateFixture(fd3);
+
+       b2Body* tri; 
+       b2BodyDef bd;
+       bd.type = b2_dynamicBody; 
+       bd.position.Set(45.5f,25.0f); 
+       tri = m_world->CreateBody(&bd); 
+       b2PolygonShape shapetemp; 
+       b2Vec2 vertices[3]; 
+       vertices[0].Set(0,0); 
+       vertices[1].Set(-9,5); 
+       vertices[2].Set(-11,7); 
+       shapetemp.Set(vertices,3); 
+       b2FixtureDef *fd2 = new b2FixtureDef; 
+       fd2->density = 1.0f; 
+       fd2->shape = &shapetemp; 
+       fd2->friction = 0; 
+       tri->CreateFixture(fd2);
+       b2PolygonShape shapetemp2; 
+       b2Vec2 vertices2[3]; 
+       vertices2[0].Set(-11,7); 
+       vertices2[1].Set(-9,5); 
+       vertices2[2].Set(-9.5,4); 
+       shapetemp2.Set(vertices2,3); 
+       b2FixtureDef *fd = new b2FixtureDef; 
+       fd->density = 150.0f; 
+       fd->friction = 0; 
+       fd->shape = &shapetemp2; 
+       tri->CreateFixture(fd); 
+
+       b2RevoluteJointDef stopper;  
+       b2Vec2 pos(45.5f,25.0f);
+       stopper.Initialize(hinge,tri,pos); 
+       m_world->CreateJoint(&stopper);
+     }
 
   }
   sim_t *sim = new sim_t("Dominos", dominos_t::create);

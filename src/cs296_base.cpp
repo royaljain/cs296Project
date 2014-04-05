@@ -44,7 +44,7 @@ int input2 = 0;
 base_sim_t::base_sim_t()
 {
 	b2Vec2 gravity;
-	gravity.Set(0.0f, 0.0f);
+	gravity.Set(0.0f, -10.0f);
 	m_world = new b2World(gravity);
 
 	m_text_line = 30;
@@ -135,6 +135,14 @@ void base_sim_t::step(settings_t* settings)
       body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
   }  
   
+
+  if(finalAngle < initialAngle)
+  {
+      input -=1;
+      initialAngle -=1;
+      body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
+  }
+
   if(finalAngle2 > initialAngle2)
   {
     input2+=1;
@@ -142,6 +150,12 @@ void base_sim_t::step(settings_t* settings)
       body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
   }  
   
+  if(finalAngle2 < initialAngle2)
+  {
+      input2 -=1;
+      initialAngle2 -=1;
+      body->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
+  }
   if(finalAngle==initialAngle && finalAngle2==initialAngle2)
   {
       m_debug_draw.DrawString(200,100,"Enter Next Number");

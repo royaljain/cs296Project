@@ -144,7 +144,7 @@ namespace cs296
       
       //! Press left to pan left.
     case GLUT_KEY_LEFT:
-      finalAngle2+=36;
+      finalAngle-=36;
       break;
       
     //! Press right to pan right.
@@ -154,15 +154,12 @@ namespace cs296
       
     //! Press down to pan down.
     case GLUT_KEY_DOWN:
-      finalAngle2+=36;
-      settings.view_center.y -= 0.5f;
-      resize_cb(width, height);
+      finalAngle2-=36;
       break;
       
     //! Press up to pan up.
     case GLUT_KEY_UP:
-      settings.view_center.y += 0.5f;
-      resize_cb(width, height);
+      finalAngle2+=36;
       break;
       
     //! Press home to reset the view.
