@@ -110,13 +110,13 @@ void base_sim_t::draw_title(int x, int y, const char *string)
 void base_sim_t::step(settings_t* settings)
 {
  
-  char numero = int((output->GetAngle()*360/PI+10)/36)%10 + '0';
+  char numero = int((output->GetAngle()*180/PI+10)/36)%10 + '0';
   //cout<<output->GetAngle()<<" ";
   m_debug_draw.DrawString(900,30,"Output tens digit");
   m_debug_draw.DrawString(1050,30,&numero);
   
   
-  char numero2 = int((output2->GetAngle()*360/PI+10)/36)%10 + '0';
+  char numero2 = int((output2->GetAngle()*180/PI+10)/36)%10 + '0';
   //cout<<output2->GetAngle()<<" ";
   m_debug_draw.DrawString(450,30,"Output units digit");
   m_debug_draw.DrawString(600,30,&numero2);

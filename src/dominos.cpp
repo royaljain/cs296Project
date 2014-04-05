@@ -148,12 +148,6 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       float distance2= (radius_governer + radius_output + max(radius_governer,radius_output)*PI/20 + 0.1*min(radius_governer,radius_output));
       float centre_y_output = centre_y_governer + sqrt(distance2*distance2 - pow((centre_x_output - centre_x_governer),2));
 
-   /*   float radius_carry_support = 4.000f;
-      float centre_x_carry_support = 17.5f;
-      float distance3= (radius_governer + radius_carry_support + max(radius_governer,radius_carry_support)*PI/20 + 0.1*min(radius_governer,radius_carry_support));
-      float centre_y_carry_support = centre_y_governer - sqrt(distance3*distance3 - pow((centre_x_carry_support - centre_x_governer),2));
-      printf("%0.10f\n",centre_y_carry_support);
-*/
       governer = generateSpokedWheel(radius_governer,centre_x_governer,centre_y_governer,18.0,m_world,reference,20,0.7f);
       output = generateSpokedWheel(radius_output,centre_x_output,centre_y_output,0.0,m_world,reference,10,1.0f);
 
@@ -215,7 +209,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
 
       b2BodyDef bd3;
       bd3.type = b2_dynamicBody;
-      bd3.position.Set((centre_x_carry_support+centre_x_governer)/2.0,centre_y_input+3.00);
+      bd3.position.Set((centre_x_carry_support+centre_x_governer)/2.0,centre_y_governer+3.00);
       shelf = m_world->CreateBody(&bd3);
             
       b2PolygonShape rect;
@@ -232,7 +226,7 @@ b2Body* generateSpokedWheel(float radius ,float x_centre,float y_centre,float an
       
       b2BodyDef bd4;
       bd4.type = b2_dynamicBody;
-      bd4.position.Set(((centre_x_carry_support+centre_x_governer)/2.0)-3.00,centre_y_input);
+      bd4.position.Set(((centre_x_carry_support+centre_x_governer)/2.0)-3.00,centre_y_governer);
       shelf2 = m_world->CreateBody(&bd4);
             
       b2PolygonShape rect2;
