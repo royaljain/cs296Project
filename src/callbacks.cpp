@@ -136,8 +136,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*0;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*0;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -150,8 +150,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*1;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*1;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -163,8 +163,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*2;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*2;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -176,8 +176,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*3;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*3;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -189,8 +189,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*4;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*4;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -202,8 +202,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*5;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*5;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -215,8 +215,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*6;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*6;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -228,8 +228,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*7;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*7;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -241,8 +241,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*8;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*8;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;
@@ -254,8 +254,8 @@ namespace cs296
       }  
     else
       {
-          finalAngle = 36*9;
-          finalAngle2 = 36*tens_digit;
+          finalAngle += 36*9;
+          finalAngle2 += 36*tens_digit;
           tens = true;
       }   
     break;

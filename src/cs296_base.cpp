@@ -51,7 +51,9 @@ int prev = 0;
 int input = 0;
 int input2 = 0;
 
+float angle_dir = 0;
 
+float angle_gov = 0;
 bool moved = false;
 
 b2Body* generateSpokedWheel(int grpIndex, float radius ,float x_centre,float y_centre,float angle,b2World* m_world,b2Body* b2, int spokes, float dens)
@@ -235,8 +237,7 @@ void base_sim_t::step(settings_t* settings)
         m_world->DestroyBody(dirchanger);
         m_world->DestroyBody(governer2);
         dirchanger = generateSpokedWheel(-1,4.0f,30.0f + 1.7*8.0f - 48.0f ,y_ca,0.0,m_world,reference,10,1.0f);
-        governer2 = generateSpokedWheel(-1,radius_governer,centre_x_governer,centre_y_governer,36.0,m_world,reference,20,0.5f);
-     
+        governer2 = generateSpokedWheel(-1,radius_governer,centre_x_governer,centre_y_governer,0.0,m_world,reference,20,0.5f);
       }  
   }  
   
@@ -252,14 +253,21 @@ void base_sim_t::step(settings_t* settings)
     }
 
     if(finalAngle2==initialAngle2 && moved)
-    {
+    { 
+      angle_dir = dirchanger->GetAngle();
+      angle_gov = governer2->GetAngle();
+     
       m_world->DestroyBody(dirchanger);
       m_world->DestroyBody(governer2);
-      dirchanger = generateSpokedWheel(-1,4.0f,30.0f + 1.7*8.0f - 48.0f ,y_ca,0.0,m_world,reference,10,1.0f);
-      governer2 = generateSpokedWheel(1,radius_governer,centre_x_governer,centre_y_governer,36.0,m_world,reference,20,0.5f);
-      dirchanger = generateSpokedWheel(1,4.0f,30.0f + 1.7*8.0f - 48.0 ,y_ca,0.0,m_world,reference,10,1.0f);
+      dirchanger = generateSpokedWheel(1,4.0f,30.0f + 1.7*8.0f - 48.0f ,y_ca,0.0,m_world,reference,10,1.0f);
+      governer2 = generateSpokedWheel(1,radius_governer,centre_x_governer,centre_y_governer,0.0,m_world,reference,20,0.5f);
+         b2Vec2 b;
+        b.Set(0.0,0.0);
+        dirchanger->SetTransform(b,angle_dir);
+        governer2->SetTransform(b,angle_gov);
+  
       moved= false;
-    }  
+     }  
   }
   // if(finalAngle2 > initialAngle2)
   // {
