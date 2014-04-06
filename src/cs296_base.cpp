@@ -135,30 +135,30 @@ void base_sim_t::step(settings_t* settings)
 
   if(finalAngle > initialAngle)
   {
-      input +=1;
-      initialAngle +=1;
+      input +=2;
+      initialAngle +=2;
       body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
   }  
   
 
   if(finalAngle < initialAngle)
   {
-      input -=1;
-      initialAngle -=1;
+      input -=2;
+      initialAngle -=2;
       body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
   }
 
   if(finalAngle2 > initialAngle2)
   {
-    input2+=1;
-      initialAngle2 +=1;
+    input2+=2;
+      initialAngle2 +=2;
       body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
   }  
   
   if(finalAngle2 < initialAngle2)
   {
-      input2 -=1;
-      initialAngle2 -=1;
+      input2 -=2;
+      initialAngle2 -=2;
       body->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
   }
 
