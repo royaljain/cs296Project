@@ -98,7 +98,7 @@ namespace cs296
     //! What are these?
     B2_NOT_USED(x);
     B2_NOT_USED(y);
-    
+
     switch (key)
     {
     case 27:

@@ -44,6 +44,7 @@ extern b2Body *output2 ;
 extern b2Body* reference;
 extern b2World* m_world;
 extern float y_ca;
+extern b2Body* b;
 extern b2Body* dirchanger;
 int initial = 18;
 int prev = 0;
@@ -197,13 +198,13 @@ void base_sim_t::step(settings_t* settings)
  
   char numero = int((output->GetAngle()*180/PI+18)/36)%10 + '0';
   //cout<<output->GetAngle()<<" ";
-  m_debug_draw.DrawString(900,30,"Output tens digit");
+  m_debug_draw.DrawString(900,30,"Output units digit");
   m_debug_draw.DrawString(1050,30,&numero);
   
   
   char numero2 = int((output2->GetAngle()*180/PI+18)/36)%10 + '0';
   //cout<<output2->GetAngle()*180/PI<<" ";
-  m_debug_draw.DrawString(450,30,"Output units digit");
+  m_debug_draw.DrawString(450,30,"Output tens digit");
   m_debug_draw.DrawString(600,30,&numero2);
   
   
@@ -216,34 +217,26 @@ void base_sim_t::step(settings_t* settings)
   m_debug_draw.DrawString(450,630,"Input Tens digit");
   m_debug_draw.DrawString(600,630,&numero4);
   
-  float xshift = 48.0f;
-  float radius_input = 4.0f;
-  float centre_x_input = 35.0f - xshift;
-  float centre_y_input = 10.0f ;
-  float radius_governer = 8.0f;
-  float centre_x_governer = 30.0f - xshift;
-  float distance = (radius_governer + radius_input + max(radius_governer,radius_input)*PI/20 + 0.1*min(radius_governer,radius_input));
-  float centre_y_governer = sqrt(distance*distance - pow((centre_x_input - centre_x_governer),2)) + centre_y_input; 
-
+ 
   if(finalAngle > initialAngle)
   {
       moved = true;
       input +=2;
       initialAngle +=2;
       body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
-  
+  /*
       if(finalAngle==initialAngle)
       {
         m_world->DestroyBody(dirchanger);
         m_world->DestroyBody(governer2);
         dirchanger = generateSpokedWheel(-1,4.0f,30.0f + 1.7*8.0f - 48.0f ,y_ca,0.0,m_world,reference,10,1.0f);
         governer2 = generateSpokedWheel(-1,radius_governer,centre_x_governer,centre_y_governer,0.0,m_world,reference,20,0.5f);
-      }  
+      } */ 
   }  
   
   
 
-  if(finalAngle == initialAngle)
+  if(finalAngle == initialAngle && moved)
   {
     if(finalAngle2 > initialAngle2)
     {
@@ -252,22 +245,6 @@ void base_sim_t::step(settings_t* settings)
       body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );    
     }
 
-    if(finalAngle2==initialAngle2 && moved)
-    { 
-      angle_dir = dirchanger->GetAngle();
-      angle_gov = governer2->GetAngle();
-     
-      m_world->DestroyBody(dirchanger);
-      m_world->DestroyBody(governer2);
-      dirchanger = generateSpokedWheel(1,4.0f,30.0f + 1.7*8.0f - 48.0f ,y_ca,0.0,m_world,reference,10,1.0f);
-      governer2 = generateSpokedWheel(1,radius_governer,centre_x_governer,centre_y_governer,0.0,m_world,reference,20,0.5f);
-         b2Vec2 b;
-        b.Set(0.0,0.0);
-        dirchanger->SetTransform(b,angle_dir);
-        governer2->SetTransform(b,angle_gov);
-  
-      moved= false;
-     }  
   }
   // if(finalAngle2 > initialAngle2)
   // {
