@@ -8,6 +8,8 @@
 //! Included in double quotes - the path to find these has to be given at compile time
 #include "callbacks.hpp"
 #include "dominos.hpp"
+#include "cs296_base.hpp"
+
 #include <iostream>
 #ifndef __APPLE__
 #include "GL/glui.h"
@@ -24,6 +26,9 @@ extern int finalAngle;
 extern int initialAngle;
 extern int initialAngle2;
 extern int finalAngle2;
+
+bool tens = true;
+int tens_digit = 0;
 namespace cs296
 {
   int32 test_index = 0;
@@ -122,7 +127,139 @@ namespace cs296
     case 'p':
       settings.pause = !settings.pause;
       break;
-      
+    
+    case '0':
+    if(tens)
+      {
+        tens_digit = 0;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*0;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+
+    case '1':
+    if(tens)
+      {
+        tens_digit = 1;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*1;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '2':
+    if(tens)
+      {
+        tens_digit = 2;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*2;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '3':
+    if(tens)
+      {
+        tens_digit = 3;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*3;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '4':
+    if(tens)
+      {
+        tens_digit = 4;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*4;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '5':
+    if(tens)
+      {
+        tens_digit = 5;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*5;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '6':
+    if(tens)
+      {
+        tens_digit = 6;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*6;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '7':
+    if(tens)
+      {
+        tens_digit = 7;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*7;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '8':
+    if(tens)
+      {
+        tens_digit = 8;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*8;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    case '9':
+    if(tens)
+      {
+        tens_digit = 9;
+        tens =false;
+      }  
+    else
+      {
+          finalAngle = 36*9;
+          finalAngle2 = 36*tens_digit;
+          tens = true;
+      }   
+    break;
+    
       //! The default case. Why is this needed?
     default:
       if (test)
@@ -144,22 +281,18 @@ namespace cs296
       
       //! Press left to pan left.
     case GLUT_KEY_LEFT:
-      finalAngle-=36;
       break;
       
     //! Press right to pan right.
     case GLUT_KEY_RIGHT:
-      finalAngle+=36;
       break;
       
     //! Press down to pan down.
     case GLUT_KEY_DOWN:
-      finalAngle2-=36;
       break;
       
     //! Press up to pan up.
     case GLUT_KEY_UP:
-      finalAngle2+=36;
       break;
       
     //! Press home to reset the view.
