@@ -126,21 +126,9 @@ void base_sim_t::step(settings_t* settings)
 
  
   char numero = int((output->GetAngle()*180/PI+25)/36)%10 + '0';
-  //cout<<output->GetAngle()<<" ";
   m_debug_draw.DrawString(900,30,"Output units digit");
   m_debug_draw.DrawString(1050,30,&numero);
-  char numero2;
-  
-  if(((output2->GetAngle()*180/PI)/36 - prev)>0.5  && ((output2->GetAngle()*180/PI)/36 -prev2) <0.0001)
-  {
-  prev = (output2->GetAngle()*180/PI)/36;
-  a+=1;
-  } 
-  
-  prev2 = (output2->GetAngle()*180/PI)/36;
-  numero2 = a%10 + '0';	
-  cout<<(output2->GetAngle()*180/PI)/36<<endl;
-  //cout<<output2->GetAngle()*180/PI<<" ";
+  char numero2 = int((output2->GetAngle()*180/PI+25)/36)%10 +'0';
   m_debug_draw.DrawString(450,30,"Output tens digit");
   m_debug_draw.DrawString(600,30,&numero2);
   
