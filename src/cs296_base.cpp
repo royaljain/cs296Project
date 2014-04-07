@@ -47,8 +47,9 @@ extern float y_ca;
 extern b2Body* b;
 extern b2Body* dirchanger;
 int initial = 18;
-int prev = 0;
-
+float prev = 0;
+int a = 0;
+float prev2=0;
 int input = 0;
 int input2 = 0;
 
@@ -56,78 +57,6 @@ float angle_dir = 0;
 
 float angle_gov = 0;
 bool moved = false;
-
-b2Body* generateSpokedWheel(int grpIndex, float radius ,float x_centre,float y_centre,float angle,b2World* m_world,b2Body* b2, int spokes, float dens)
-{
-      b2Body *b;
-  
-      b2BodyDef bd;
-      bd.position.Set(x_centre,y_centre);
-      bd.type = b2_dynamicBody;
-      b = m_world->CreateBody(&bd);
-      
-      b2CircleShape circle;
-      circle.m_radius = radius;
-
-      b2FixtureDef *fd = new b2FixtureDef;
-      fd->density = dens;
-      fd->shape = &circle;
-      fd->filter.groupIndex= grpIndex;
-      b->CreateFixture(fd);
-
-      for(int i=0;i<spokes;i++)
-      {
-        float ang = 360.0/spokes;        
-        float theta = (ang*i + angle)*PI/180 ;
-        float deltheta = ang*PI/720;
-        float length = 2*radius*sin(deltheta/2.0);
-
-        b2PolygonShape bs1;
-        b2Vec2 pos((radius*cos(deltheta/2.0)+length)*cos(theta + deltheta/2.0),
-          (radius*cos(deltheta/2.0)+length)*sin(theta + deltheta/2.0));
-        bs1.SetAsBox(length,length,pos,theta+deltheta/2);
-
-
-        b2FixtureDef *fd2 = new b2FixtureDef;
-        fd2->density = 1.0f;
-        fd2->shape = &bs1;
-        fd2->filter.groupIndex= grpIndex;
-        b->CreateFixture(fd2); 
-  
-        b2PolygonShape bs2;
-        
-        
-        b2Vec2 vertices[3];
-
-        vertices[0].Set(pos.x + length*cos(theta + deltheta/2.0)+length*sin(theta + deltheta/2.0),
-        pos.y + length*sin(theta + deltheta/2.0)-length*cos(theta + deltheta/2.0));
-
-        vertices[1].Set(pos.x + 2*length*cos(theta + deltheta/2.0),pos.y + 2*length*sin(theta + deltheta/2.0));
-        
-        vertices[2].Set(pos.x +length*cos(theta + deltheta/2.0)-length*sin(theta + deltheta/2.0),
-        pos.y + length*sin(theta + deltheta/2.0)+length*cos(theta + deltheta/2.0));
-
-        bs2.Set(vertices,3);
-
-
-        b2FixtureDef *fd3 = new b2FixtureDef;
-        fd3->density = 1.0f;
-        fd3->shape = &bs2;
-        fd3->filter.groupIndex= grpIndex;
-        b->CreateFixture(fd3);
-
-
-
-
-      }
-
-       b2RevoluteJointDef revoluteJointDef;
-       revoluteJointDef.Initialize(b,b2,b->GetWorldCenter());
-       m_world->CreateJoint(&revoluteJointDef);
-       return b;
-}
-
-
 
 base_sim_t::base_sim_t()
 {
@@ -196,13 +125,21 @@ void base_sim_t::step(settings_t* settings)
 {
 
  
-  char numero = int((output->GetAngle()*180/PI+18)/36)%10 + '0';
+  char numero = int((output->GetAngle()*180/PI+25)/36)%10 + '0';
   //cout<<output->GetAngle()<<" ";
   m_debug_draw.DrawString(900,30,"Output units digit");
   m_debug_draw.DrawString(1050,30,&numero);
+  char numero2;
   
+  if(((output2->GetAngle()*180/PI)/36 - prev)>0.5  && ((output2->GetAngle()*180/PI)/36 -prev2) <0.0001)
+  {
+  prev = (output2->GetAngle()*180/PI)/36;
+  a+=1;
+  } 
   
-  char numero2 = int((output2->GetAngle()*180/PI+18)/36)%10 + '0';
+  prev2 = (output2->GetAngle()*180/PI)/36;
+  numero2 = a%10 + '0';	
+  cout<<(output2->GetAngle()*180/PI)/36<<endl;
   //cout<<output2->GetAngle()*180/PI<<" ";
   m_debug_draw.DrawString(450,30,"Output tens digit");
   m_debug_draw.DrawString(600,30,&numero2);
@@ -218,12 +155,12 @@ void base_sim_t::step(settings_t* settings)
   m_debug_draw.DrawString(600,630,&numero4);
   
  
-  if(finalAngle > initialAngle)
+  if(finalAngle2 > initialAngle2)
   {
       moved = true;
-      input +=2;
-      initialAngle +=2;
-      body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );      
+      input2 +=2;
+      initialAngle2 +=2;
+      body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
   /*
       if(finalAngle==initialAngle)
       {
@@ -236,13 +173,13 @@ void base_sim_t::step(settings_t* settings)
   
   
 
-  if(finalAngle == initialAngle && moved)
+  if(finalAngle2 == initialAngle2 )
   {
-    if(finalAngle2 > initialAngle2)
+    if(finalAngle > initialAngle)
     {
-      input2+=2;
-      initialAngle2 +=2;
-      body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );    
+      input+=2;
+      initialAngle +=2;
+      body->SetTransform( body->GetPosition(), initialAngle*DEGTORAD );    
     }
 
   }

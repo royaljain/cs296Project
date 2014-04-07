@@ -98,175 +98,34 @@ namespace cs296
     //! What are these?
     B2_NOT_USED(x);
     B2_NOT_USED(y);
-
-    switch (key)
-    {
-    case 27:
-      exit(0);
-      break;
-      
+	if (key == 27) exit(0);
+	else if (key =='z') {      
       //! Press 'z' to zoom out.
-    case 'z':
       view_zoom = b2Min(1.1f * view_zoom, 20.0f);
       resize_cb(width, height);
-      break;
-      
+   }
+    else if (key =='x') {
     //! Press 'x' to zoom in.
-    case 'x':
       view_zoom = b2Max(0.9f * view_zoom, 0.02f);
       resize_cb(width, height);
-      break;
-      
-    //! Press 'r' to reset.
-    case 'r':
-      delete test;
-      test = entry->create_fcn();
-      break;
-      
-      //! Press 'p' to pause.
-    case 'p':
-      settings.pause = !settings.pause;
-      break;
-    
-    case '0':
-    if(tens)
-      {
-        tens_digit = 0;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*0;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-
-    case '1':
-    if(tens)
-      {
-        tens_digit = 1;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*1;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '2':
-    if(tens)
-      {
-        tens_digit = 2;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*2;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '3':
-    if(tens)
-      {
-        tens_digit = 3;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*3;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '4':
-    if(tens)
-      {
-        tens_digit = 4;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*4;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '5':
-    if(tens)
-      {
-        tens_digit = 5;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*5;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '6':
-    if(tens)
-      {
-        tens_digit = 6;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*6;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '7':
-    if(tens)
-      {
-        tens_digit = 7;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*7;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '8':
-    if(tens)
-      {
-        tens_digit = 8;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*8;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    case '9':
-    if(tens)
-      {
-        tens_digit = 9;
-        tens =false;
-      }  
-    else
-      {
-          finalAngle += 36*9;
-          finalAngle2 += 36*tens_digit;
-          tens = true;
-      }   
-    break;
-    
-      //! The default case. Why is this needed?
-    default:
+    }  
+    else if (key >= '0' && key <= '9') {
+		if(tens) {
+			tens_digit=key-'0';
+			tens=false;
+			}
+		else {
+			finalAngle +=  36*(key -'0');
+			finalAngle2 += 36*tens_digit;
+			tens=true;
+			}
+	}
+    else{
       if (test)
 	{
 	  test->keyboard(key);
 	}
-    }
+	}
   }
   
   
