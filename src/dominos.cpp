@@ -22,25 +22,23 @@
  * Instructor: Parag Chaudhuri
  */
 
-
-
 #include "cs296_base.hpp"
 #include "render.hpp"
 #define DEGTORAD 0.0174532925199432957f
 #ifdef __APPLE__
-	#include <GLUT/glut.h>
+  #include <GLUT/glut.h>
 #else
-	#include "GL/freeglut.h"
+  #include "GL/freeglut.h"
 #endif
- #include<math.h>
+#include<math.h>
 #include<iostream>
 #include<stdio.h>
 #include <cstring>
+
 using namespace std;
 
 #include "dominos.hpp"
 #define PI 3.14159
-
 
 int initialAngle = 0;
 int finalAngle = 0;
@@ -65,14 +63,18 @@ b2Body* governer2;
 b2Body* shelf;
 b2Body* shelf2;
 
-
 namespace cs296
 {
   /**  The is the constructor 
    * This is the documentation block for the constructor.
    */ 
   
-
+/** \par Generate Spoked Wheel Function */
+/** 
+* Function generateSpokedWheel :: Parameters = int,float,float,float,float,b2World*,b2Body*,int,float :: Action = creates a spoked wheel 
+* given the group index (i.e. bodies collide when they have the same positive group index and don't if they have the same negative group index, radius, the coordinates of its centre, initial angle, world in which it is, body to which it is linked, 
+* number of spokes and its density <br>
+*/
 b2Body* generateSpokedWheel(int grpIndex, float radius ,float x_centre,float y_centre,float angle,b2World* m_world,b2Body* b2, int spokes, float dens)
 {
       b2Body *b;
@@ -112,7 +114,6 @@ b2Body* generateSpokedWheel(int grpIndex, float radius ,float x_centre,float y_c
   
         b2PolygonShape bs2;
         
-        
         b2Vec2 vertices[3];
 
         vertices[0].Set(pos.x + length*cos(theta + deltheta/2.0)+length*sin(theta + deltheta/2.0),
@@ -125,16 +126,11 @@ b2Body* generateSpokedWheel(int grpIndex, float radius ,float x_centre,float y_c
 
         bs2.Set(vertices,3);
 
-
         b2FixtureDef *fd3 = new b2FixtureDef;
         fd3->density = 1.0f;
         fd3->shape = &bs2;
         fd3->filter.groupIndex= grpIndex;
         b->CreateFixture(fd3);
-
-
-
-
       }
 
        b2RevoluteJointDef revoluteJointDef;
@@ -143,21 +139,24 @@ b2Body* generateSpokedWheel(int grpIndex, float radius ,float x_centre,float y_c
        return b;
 }
 
-
+/** \par Generate Two Spoked Wheel Function */
+/** 
+* Function generateTwoSpokedWheel :: Parameters = b2Body*,b2World*,int :: Action = creates a two spoked wheel 
+* given the body to which it is linked, world in which it is and group index. Also, 2 shelves are created which 
+ link the spoked wheel to the governer which causes the 2 spoked wheel to rotate the same angle as the governer.
+ The radius of the two spoked wheel and the coordinates. 
+* of its center are hard coded inside the function <br>
+*/
 b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
 {
-
-
       float radius_input = 4.0f;
       float centre_x_input = 35.0f;
-      float centre_y_input = 10.0f;
-      
+      float centre_y_input = 10.0f;      
       
       float radius_governer = 8.0f;
       float centre_x_governer = 30.0f;
       float distance = (radius_governer + radius_input + max(radius_governer,radius_input)*PI/20 + 0.1*min(radius_governer,radius_input));
-      float centre_y_governer = sqrt(distance*distance - pow((centre_x_input - centre_x_governer),2)) + centre_y_input; 
-      
+      float centre_y_governer = sqrt(distance*distance - pow((centre_x_input - centre_x_governer),2)) + centre_y_input;       
 
       b2Body* b;
 
@@ -166,11 +165,9 @@ b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
        
       b2BodyDef bd;
       bd.position.Set(centre_x_carry_support,centre_y_governer);
-      bd.type = b2_dynamicBody;
+      bd.type = b2_dynamicBody;      
       
-      
-      b = m_world->CreateBody(&bd);
-    
+      b = m_world->CreateBody(&bd);    
 
       b2CircleShape circle;
       circle.m_radius = radius;
@@ -227,8 +224,6 @@ b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
         fd3->filter.groupIndex= grpIndex;
         b->CreateFixture(fd3);
 
-
-
         theta=(324+angl)*PI/180;}
 
         b2RevoluteJointDef revoluteJointDef;
@@ -251,10 +246,7 @@ b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
       b2FixtureDef *fd3 = new b2FixtureDef;
       fd3->density = 30.0f;
       fd3->shape = &rect;
-      shelf->CreateFixture(fd3);
-
-
-      
+      shelf->CreateFixture(fd3);      
       
       b2BodyDef bd4;
       bd4.type = b2_dynamicBody;
@@ -269,9 +261,6 @@ b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
       fd4->density = 30.0f;
       fd4->shape = &rect2;
       shelf2->CreateFixture(fd4);
-
-
-
 
       b2RevoluteJointDef revoluteJointDef1;
       revoluteJointDef1.bodyA = shelf;
@@ -311,17 +300,21 @@ b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
     return b;
 }
 
-
-
-
-
-
-
-
-
-
-
-
+  /** \par Creating the structure of the pascaline */ 
+  /** 
+  * This creates the basic structure of the pascaline containing 7 spoked wheels and 1 two spoked wheel <br>
+  * Variable body :: Type = b2Body* :: Action = this takes the input of the units digit from the user <br>
+  * Variable governer :: Type = b2Body* :: Action = this is also used for rotating output and have the hinges attached which 
+  prevent backward rotation <br>
+  * Variable output :: Type = b2Body* :: Action = this displays the output of the units digit of the answer <br>
+  * Variable b :: Type = b2Body* :: Action = this performs the action of carry. It is the only two spoked wheel in the system. 
+  * It is connected to the governer. It rotates governer2 after every 10 increments in body <br>
+  * Variable body2 :: Type = b2Body* :: Action = this takes the input of the tens digit from the user <br>
+  * Variable dirchanger :: Type = b2Body* :: Action = this changes the direction of rotation of the governer2 keeping it the same as the governer <br>
+  * Variable governer2 :: Type = b2Body* :: Action = this is also used for rotating output2 and have the hinges attached which 
+  prevent backward rotation <br>
+  * Variable output2 :: Type = b2Body* :: Action = this displays the output of the tens digit of the answer <br>
+  */
   dominos_t::dominos_t()
   {
 
@@ -392,7 +385,9 @@ b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
 
 
 
-
+/**
+* Variable hinge :: Type = b2Body* :: Action = prevents the reverse movement of the spoked wheels <br>
+*/
 {
        b2Body* hinge;
        b2BodyDef ref;
@@ -440,7 +435,9 @@ b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex)
        stopper.Initialize(hinge,tri,pos); 
        m_world->CreateJoint(&stopper);
      }
- 
+  /**
+  * Variable hinge :: Type = b2Body* :: Action = prevents the reverse movement of the spoked wheels <br>
+  */
   {
        b2Body* hinge;
        b2BodyDef ref;
