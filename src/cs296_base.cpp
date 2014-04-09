@@ -50,17 +50,11 @@ extern b2Body* dirchanger;
 
 extern b2Body* shelf;
 extern b2Body* shelf2;
-int initial = 18;
-float prev = 0;
-int a = 0;
-float prev2=0;
+
+
 int input = 0;
 int input2 = 0;
 
-float angle_dir = 0;
-
-float angle_gov = 0;
-bool moved = false;
 bool firstTime = true;
 bool firstTime2 = true;
 
@@ -418,7 +412,6 @@ void base_sim_t::step(settings_t* settings)
       firstTime = true;
       }
     
-      moved = true;
       input2 +=2;
       initialAngle2 +=2;
       body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      

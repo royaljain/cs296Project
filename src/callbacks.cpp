@@ -27,8 +27,21 @@ extern int initialAngle;
 extern int initialAngle2;
 extern int finalAngle2;
 
+extern int input ;
+extern int input2 ;
+
+extern bool firstTime ;
+extern bool firstTime2 ;
+
+
+
+bool firstno=true;
+char op='(';
 bool tens = true;
 int tens_digit = 0;
+
+
+
 namespace cs296
 {
   int32 test_index = 0;
@@ -104,22 +117,69 @@ namespace cs296
       view_zoom = b2Min(1.1f * view_zoom, 20.0f);
       resize_cb(width, height);
    }
+    
     else if (key =='x') {
     //! Press 'x' to zoom in.
       view_zoom = b2Max(0.9f * view_zoom, 0.02f);
       resize_cb(width, height);
-    }  
-    else if (key >= '0' && key <= '9') {
-		if(tens) {
-			tens_digit=key-'0';
-			tens=false;
-			}
-		else {
-			finalAngle +=  36*(key -'0');
-			finalAngle2 += 36*tens_digit;
-			tens=true;
-			}
-	}
+    }
+
+
+    else if(!firstno) 
+  {
+  
+    if(key == '+' || key == '-')op=key;
+    
+    else if (key >= '0' && key <= '9') 
+    {
+      if(tens) 
+      {
+      tens_digit=key-'0';
+      tens=false;
+      }
+    
+    else 
+    {
+     if(op!='(')
+      {
+
+      int temp = tens_digit * 10 + key -'0';
+      
+      if(op == '-')
+      {
+        temp = 100 - temp;
+      }
+      
+      finalAngle +=  36*(temp%10);
+      finalAngle2 += 36*(temp/10);
+      tens=true;
+      firstno=true;
+      }
+    }
+    
+    }
+  }  
+
+
+
+
+  else if (key >= '0' && key <= '9') 
+  {
+    if(tens) {
+      tens_digit=key-'0';
+      tens=false;
+      }
+    else {
+      finalAngle +=  36*(key -'0');
+      finalAngle2 += 36*tens_digit;
+      tens=true;
+      firstno=false;
+      }
+  }
+
+
+
+
     else{
       if (test)
 	{
@@ -282,6 +342,15 @@ namespace cs296
     initialAngle=0;
     finalAngle2=0;
     initialAngle2=0;
+    firstno=true;
+    op='(';
+    tens = true;
+    tens_digit = 0;
+    input = 0;
+    input2 = 0;
+    firstTime = true;
+    firstTime2 = true;
+
     resize_cb(width, height);
   }
   
