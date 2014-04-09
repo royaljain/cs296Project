@@ -124,7 +124,14 @@ namespace cs296
       resize_cb(width, height);
     }
 
-
+    /** \par Keyboard Input*/
+    /**
+    * The loop first checks whether the first number has been entered or not. This is important as we need this information
+    * in order to determine how the program works for addition and subtraction. Valid input to the program are the digits from
+    * 0 to 9. When the first digit is entered it is assigned to tens digit of first number. The second digit becomes the units digit
+    * of the first number. Thus the first number is determined. Then the user inputs the operator for the operation to be performed.
+    * Then finally the second number is entered and the operation is performed and the values of finalAngle and finalAngle2 are set <br>
+    */
     else if(!firstno) 
   {
   
@@ -332,7 +339,11 @@ namespace cs296
   }
   
   
-  
+  /** \par Restarting the simulation*/ 
+  /**
+  * When we restart the simulation the variables finalAngle, initialAngle, finalAngle2, initialAngle2, firstno, op, tens, tens_digit, 
+  * input, input2, firstTime, firstTime2 are reset to their original values.
+  */
   void callbacks_t::restart_cb(int)
   {
     delete test;

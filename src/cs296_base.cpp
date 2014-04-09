@@ -51,7 +51,6 @@ extern b2Body* dirchanger;
 extern b2Body* shelf;
 extern b2Body* shelf2;
 
-
 int input = 0;
 int input2 = 0;
 
@@ -367,6 +366,17 @@ void base_sim_t::draw_title(int x, int y, const char *string)
     m_debug_draw.DrawString(x, y, string);
 }
 
+/** \par The step function*/
+/**
+* Variable numero :: Type char :: Action = this is the units digit of the output. It is derived by getting the angle from the 
+* output spoked wheel, converting it to degrees and then to decimal value <br>
+* Variable numero2 :: Type char :: Action = this is the tens digit of the output. It is derived by getting the angle from the 
+* output2 spoked wheel, converting it to degrees and then to decimal value <br>
+* Variable numero3 :: Type char :: Action = this is the units digit of the input. It is derived by getting the angle from the 
+* input spoked wheel, converting it to degrees and then to decimal value <br>
+* Variable numero4 :: Type char :: Action = this is the tens digit of the input. It is derived by getting the angle from the 
+* input2 spoked wheel, converting it to degrees and then to decimal value <br>
+*/
 void base_sim_t::step(settings_t* settings)
 {
 
@@ -388,7 +398,17 @@ void base_sim_t::step(settings_t* settings)
   m_debug_draw.DrawString(450,630,"Input Tens digit");
   m_debug_draw.DrawString(600,630,&numero4);
   
- 
+  /**
+  * Variable initialAngle :: Type = int :: Action = this is the starting angle of the body spoked wheel <br>
+  * Variable finalAngle :: Type = int :: Action = this is the ending angle of the body spoked wheel <br>
+  * Variable initialAngle2 :: Type = int :: Action = this is the starting angle of the body2 spoked wheel <br>
+  * Variable finalAngle2 :: Type = int :: Action = this is the ending angle of the body2 spoked wheel <br>
+  */
+  /**
+  * If finalAngle2 > initialAngle2 that means tens digit has been entered. So we again reset the body2 wheel till we
+  * reach the condition finalAngle2 = initialAngle2 <br>
+  * While rotating tens gear system we make sure that dirchanger and b do not collide by giving them same negative group index.   
+  */
   if(finalAngle2 > initialAngle2)
   {
     if(firstTime2)
@@ -415,18 +435,14 @@ void base_sim_t::step(settings_t* settings)
       input2 +=2;
       initialAngle2 +=2;
       body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
-  /*
-      if(finalAngle==initialAngle)
-      {
-        m_world->DestroyBody(dirchanger);
-        m_world->DestroyBody(governer2);
-        dirchanger = generateSpokedWheel(-1,4.0f,30.0f + 1.7*8.0f - 48.0f ,y_ca,0.0,m_world,reference,10,1.0f);
-        governer2 = generateSpokedWheel(-1,radius_governer,centre_x_governer,centre_y_governer,0.0,m_world,reference,20,0.5f);
-      } */ 
   }  
   
   
-
+  /**
+  * If finalAngle2 == initialAngle2 and finalAngle > initialAngle that means tens digit has been entered and the body2 has been 
+  * reset and the units digit has been entered. So we again reset the body wheel till we reach the condition finalAngle = initialAngle <br>
+  * While rotating units gear system we make sure that dirchanger and b  collide by giving them same positive group index. 
+  */
   if(finalAngle2 == initialAngle2 )
   {
     if(finalAngle > initialAngle)
@@ -461,20 +477,10 @@ void base_sim_t::step(settings_t* settings)
     }
 
   }
-  // if(finalAngle2 > initialAngle2)
-  // {
-  //   input2+=2;
-  //     initialAngle2 +=2;
-  //     body2->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
-  // }  
-  
-  // if(finalAngle2 < initialAngle2)
-  // {
-  //     input2 -=2;
-  //     initialAngle2 -=2;
-  //     body->SetTransform( body2->GetPosition(), initialAngle2*DEGTORAD );      
-  // }
-
+  /**
+  * If finalAngle2 == initialAngle2 and finalAngle = initialAngle that means that the first number has been entered. 
+  * So we now ask the user to input the second number <br>
+  */
   if(finalAngle==initialAngle && finalAngle2==initialAngle2)
   {
       m_debug_draw.DrawString(200,100,"Enter Next Number");
