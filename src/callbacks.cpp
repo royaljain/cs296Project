@@ -184,8 +184,10 @@ namespace cs296
       }
   }
 
-
-
+    else if(key== 'r'){
+      delete test;
+      test = entry->create_fcn();
+}
 
     else{
       if (test)
@@ -207,20 +209,27 @@ namespace cs296
       
       //! Press left to pan left.
     case GLUT_KEY_LEFT:
+      settings.view_center.x -= 0.5f;
+      resize_cb(width, height);
       break;
       
     //! Press right to pan right.
     case GLUT_KEY_RIGHT:
+      settings.view_center.x += 0.5f;
+      resize_cb(width, height);
       break;
       
     //! Press down to pan down.
     case GLUT_KEY_DOWN:
+      settings.view_center.y -= 0.5f;
+      resize_cb(width, height);
       break;
       
     //! Press up to pan up.
     case GLUT_KEY_UP:
-      break;
-      
+      settings.view_center.y += 0.5f;
+      resize_cb(width, height);
+      break;  
     //! Press home to reset the view.
     case GLUT_KEY_HOME:
       view_zoom = 1.0f;
