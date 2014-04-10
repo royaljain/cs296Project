@@ -26,21 +26,16 @@ extern int finalAngle;
 extern int initialAngle;
 extern int initialAngle2;
 extern int finalAngle2;
-
 extern int input ;
 extern int input2 ;
 
 extern bool firstTime ;
 extern bool firstTime2 ;
 
-
-
 bool firstno=true;
 char op='(';
 bool tens = true;
 int tens_digit = 0;
-
-
 
 namespace cs296
 {
@@ -187,6 +182,20 @@ namespace cs296
     else if(key== 'r'){
       delete test;
       test = entry->create_fcn();
+    finalAngle=0;
+    initialAngle=0;
+    finalAngle2=0;
+    initialAngle2=0;
+    firstno=true;
+    op='(';
+    tens = true;
+    tens_digit = 0;
+    input = 0;
+    input2 = 0;
+    firstTime = true;
+    firstTime2 = true;
+
+
 }
 
     else{

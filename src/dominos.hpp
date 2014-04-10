@@ -29,6 +29,8 @@ namespace cs296
 {
   //! This is the class that sets up the Box2D simulation world
   //! Notice the public inheritance - why do we inherit the base_sim_t class?
+  b2Body* generateSpokedWheel(int grpIndex, float radius ,float x_centre,float y_centre,float angle,b2World* m_world,b2Body* b2, int spokes, float dens);
+  b2Body* generateTwoSpokedWheel(b2Body* gov,b2World* m_world,int grpIndex);
   class dominos_t : public base_sim_t
   {
   public:
